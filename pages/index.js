@@ -7,10 +7,18 @@ export default function Home() {
 
   // Load comments from API
   useEffect(() => {
-    fetch('/api/comments')
-      .then(res => res.json())
-      .then(data => setComments(data));
+    const fetchComments = () => {
+      fetch('/api/chat')
+        .then(res => res.json())
+        .then(data => setComments(data));
+    };
+  
+    fetchComments(); // initial load
+    const interval = setInterval(fetchComments, 3000); // every 3 seconds
+  
+    return () => clearInterval(interval); // clean up on unmount
   }, []);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
